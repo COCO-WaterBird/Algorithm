@@ -31,34 +31,28 @@ If the target is an empty string, we return `[[]]`, representing one valid way t
 
 import argparse
 import time
-import sys
+
 
 def all_construct(target, wordbank, memo=None):
     """
-     Recursively builds all possible ways to construct the target using words from the wordbank.
+    Recursively builds all possible ways to construct the target using words from the wordbank.
 
-     Args:
-         target (str): The target string to construct.
-         wordbank (List[str]): List of words that can be used to construct the target.
-         memo (dict): Memoization dictionary to store results of subproblems.
+    Args:
+        target (str): The target string to construct.
+        wordbank (List[str]): List of words that can be used to construct the target.
+        memo (dict): Memoization dictionary to store results of subproblems.
 
-     Returns:
-         List[List[str]]: A list of all combinations (as lists) that form the target.
-     """
-    if memo is None: #If memo is none, return memo = {}
+    Returns:
+        List[List[str]]: A list of all combinations (as lists) that form the target.
+    """
+    if memo is None:
         memo = {}
 
-    if target in memo: # If target belongs to memo, return memo[target]
+    if target in memo:
         return memo[target]
-
-    # print(f"Solving: '{target}'")
 
     if target == "":
         return [[]]  # Base case: one valid way to construct nothing
-
-    if not wordbank:
-        print(f"Wordbank is empty. Cannot construct target: {target}")
-        return []
 
     result = []
 
@@ -70,8 +64,6 @@ def all_construct(target, wordbank, memo=None):
             result.extend(target_ways)  # Add all combinations to result
 
     memo[target] = result  # Save in memo before returning
-
-    print(f"Subproblem: '{target}' => {result}") #Print the solution to each subproblem in the order
     return result
 
 
@@ -80,30 +72,12 @@ def main():
     Entry point for the program. Parses command-line arguments and prints results.
     """
     parser = argparse.ArgumentParser(description="Find all ways to construct a target from a wordbank.")
-    parser.add_argument('-target', type=str, required=True, help="The target string to construct.")
-    parser.add_argument('-wordbank', nargs='*', default=[], help="The list of words in the wordbank (optional).")
+    parser.add_argument('--target', type=str, required=True, help="The target string to construct.")
+    parser.add_argument('--wordbank', nargs='+', required=True, help="The list of words in the wordbank.")
     args = parser.parse_args()
 
-    # Join raw input to check for malformed syntax
-    raw_args = " ".join(sys.argv)
-
-    # Warnings for possible missing spaces near -target or -wordbank
-    if "-target" in raw_args and not " -target " in raw_args:
-        print("Warning: Missing space before or after -target. Did you mean `-target yourstring`?")
-    if "-wordbank" in raw_args and not " -wordbank " in raw_args:
-        print("Warning: Missing space before or after -wordbank. Did you mean `-wordbank word1 word2 ...`?")
-
-    # Validate the target
     target = args.target
-    if not isinstance(target, str):
-        print("Error: Invalid format for target string.")
-        return
-
-    # Validate wordbank is a list of strings
     wordbank = args.wordbank
-    if not isinstance(wordbank, list) or not all(isinstance(word, str) for word in wordbank):
-        print("Error: Wordbank must be a list of strings.")
-        return
 
     start_time = time.time()
     ways = all_construct(target, wordbank)
