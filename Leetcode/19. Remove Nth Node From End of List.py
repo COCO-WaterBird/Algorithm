@@ -1,7 +1,7 @@
 class Solution:
     def removeNthFromEnd(self, head: listNode, n: int) -> listNode:
-        first = ListNode(0)
-        second = ListNode(0)
+        first = listNode(0)
+        second = listNode(0)
         first.next = head
         second.next = head
 
