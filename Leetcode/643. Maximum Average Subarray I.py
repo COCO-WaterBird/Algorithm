@@ -1,6 +1,6 @@
 class Solution:
     def findMaxAverage(self, nums: List[int], k: int) -> float:
-        max_s = -inf  
+        max_s = -inf
         s = 0
         for i, x in enumerate(nums):
 
